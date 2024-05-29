@@ -2,7 +2,7 @@ def work_with_phonebook():
     choice = show_menu()
     phone_book = read_txt('phonebook.txt')
 
-    while choice != 6:
+    while choice != 7:
         if choice == 1:
             print_result(phone_book)
         elif choice == 2:
@@ -16,7 +16,13 @@ def work_with_phonebook():
             add_user(phone_book, user_data)
         elif choice == 5:
             write_txt('phonebook.txt', phone_book)
+        elif choice == 6:
+             source_file = input('Введите имя исходного файла: ') 
+             dest_file = input('Введите имя файла назначения: ')
+             line_number = int(input('Введите номер строки для копирования: ')) 
+             copy_user(source_file, dest_file, line_number) 
         choice = show_menu()
+       
 
 def show_menu():
     print("\nВыберите необходимое действие:\n"
@@ -25,7 +31,8 @@ def show_menu():
           "3. Найти абонента по номеру телефона\n"
           "4. Добавить абонента в справочник\n"
           "5. Сохранить справочник в текстовом формате\n"
-          "6. Закончить работу")
+          "6.копировать с одного файла в другом\n"
+          "7. Закончить работу")
     choice = int(input("Введите номер действия: "))
     return choice
 
@@ -69,5 +76,16 @@ def add_user(phone_book, user_data):
         print("Абонент добавлен")
     else:
         print("Ошибка: Неправильный формат данных")
+
+def copy_user(source_file, dest_file, line_number): 
+    with open(source_file, 'r', encoding='utf-8') as src: 
+        lines = src.readlines()
+        if line_number <= 0 or line_number > len(lines):
+            print("Ошибка: Некорректный номер строки")
+            return
+        line_to_copy = lines[line_number - 1].strip() 
+        with open(dest_file, 'a', encoding='utf-8') as dst: 
+            dst.write(line_to_copy + '\n')
+        print("Запись скопирована")
 
 work_with_phonebook()
